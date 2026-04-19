@@ -373,7 +373,7 @@ const InvitationCard = () => {
               margin: "8px 0 0",
             }}
           >
-            Wedding Invitation
+            Engagement Invitation
           </p>
         </div>
 
