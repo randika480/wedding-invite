@@ -408,11 +408,11 @@ const InvitationCard = () => {
                 Anjana
               </h2>
               <p style={{ fontSize: 12, color: "#7a5c42", margin: 0 }}>
-                Disanayaka
+                Dissanayake
               </p>
               <p style={{ fontSize: 11, color: "#9e7a5c", margin: "6px 0 0", lineHeight: 1.6 }}>
                 Daughter of<br />
-                <span style={{ color: "#4a2810" }}>Mr. &amp; Mrs. Disanayake</span>
+                <span style={{ color: "#4a2810" }}>Mr. &amp; Mrs. Dissanayake</span>
               </p>
             </div>
 
