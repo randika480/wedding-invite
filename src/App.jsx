@@ -240,7 +240,7 @@ const Envelope = ({ onOpen }) => {
                 opacity: 0.8,
               }}
             >
-              A&A
+              A&V
             </div>
           </motion.div>
 
@@ -361,7 +361,7 @@ const InvitationCard = () => {
               letterSpacing: "0.02em",
             }}
           >
-            Anjana & Stevens
+            Anjana & Venusha
           </h1>
 
           <p
@@ -445,14 +445,14 @@ const InvitationCard = () => {
                   fontStyle: "italic",
                 }}
               >
-                Mr. Stevens
+                Venusha
               </h2>
               <p style={{ fontSize: 12, color: "#7a5c42", margin: 0 }}>
-                &nbsp;
+                Fernando
               </p>
               <p style={{ fontSize: 11, color: "#9e7a5c", margin: "6px 0 0", lineHeight: 1.6 }}>
                 Son of<br />
-                <span style={{ color: "#4a2810" }}>Mr. &amp; Mrs. Smith</span>
+                <span style={{ color: "#4a2810" }}>Mr. &amp; Mrs. Fernando</span>
               </p>
             </div>
           </div>
@@ -526,7 +526,7 @@ const InvitationCard = () => {
               fontWeight: 400,
             }}
           >
-            Saturday, The 14th of June
+            Friday, The 8th of May
           </p>
           <p
             style={{
@@ -536,7 +536,7 @@ const InvitationCard = () => {
               letterSpacing: "0.05em",
             }}
           >
-            2025 &nbsp;·&nbsp; 6:00 in the evening
+            2026 &nbsp;·&nbsp; 9:00 in the morning
           </p>
 
           <div
@@ -567,33 +567,13 @@ const InvitationCard = () => {
               margin: "0 0 4px",
             }}
           >
-            The Grand Ballroom
+            Asliya Golden Cassendra
           </p>
-          <p
-            style={{
-              fontSize: 12,
-              color: "#7a5c42",
-              margin: 0,
-              lineHeight: 1.7,
-            }}
-          >
-            Colombo Hilton, Sri Lanka
-          </p>
+
         </div>
 
         {/* RSVP */}
         <div style={{ ...sectionStyle, paddingBottom: 8 }}>
-          <p
-            style={{
-              fontSize: 10,
-              letterSpacing: "0.3em",
-              textTransform: "uppercase",
-              color: "#b5804a",
-              margin: "0 0 6px",
-            }}
-          >
-            Kindly reply by 1st June 2025
-          </p>
           <p style={{ fontSize: 12, color: "#7a5c42", margin: 0 }}>
             Your presence is the greatest gift of all.
           </p>
