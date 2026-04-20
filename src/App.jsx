@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // ─── Shared Decorative Components ────────────────────────────────────────────
@@ -40,7 +40,7 @@ const Ring = () => (
   </svg>
 );
 
-// ─── Envelope Scene (SVG-based with JS animation) ────────────────────────────
+// ─── Envelope Scene ───────────────────────────────────────────────────────────
 
 const Envelope = ({ onOpen }) => {
   const flapFrontRef = useRef(null);
@@ -93,13 +93,10 @@ const Envelope = ({ onOpen }) => {
     function tick(now) {
       const t = Math.min((now - start) / duration, 1);
       const e = ease(t);
-
-      // Apex of the flap moves from y=148 up to y=-10 (above envelope)
       const apexY = 148 - 158 * e;
       const pts = `0,0 420,0 210,${apexY.toFixed(1)}`;
       front.setAttribute("points", pts);
 
-      // Keep shadow polygons in sync
       allPolys.forEach((p, i) => {
         if (i === 0) return;
         if (i === 1) p.setAttribute("points", pts);
@@ -110,7 +107,6 @@ const Envelope = ({ onOpen }) => {
         if (i === 3) p.setAttribute("points", pts);
       });
 
-      // When going past halfway, tint flap darker (shows back face)
       if (t > 0.5) {
         const back = (t - 0.5) * 2;
         const r = Math.round(245 - 40 * back);
@@ -122,7 +118,6 @@ const Envelope = ({ onOpen }) => {
       if (t < 1) {
         requestAnimationFrame(tick);
       } else {
-        // Hide flap entirely
         allPolys.forEach((p) => p.setAttribute("opacity", "0"));
         done?.();
       }
@@ -139,8 +134,7 @@ const Envelope = ({ onOpen }) => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        background:
-          "radial-gradient(ellipse at 50% 40%, #2a1605 0%, #120800 60%, #080300 100%)",
+        background: "radial-gradient(ellipse at 50% 40%, #2a1605 0%, #120800 60%, #080300 100%)",
         padding: "60px 24px",
         position: "relative",
         overflow: "hidden",
@@ -161,8 +155,7 @@ const Envelope = ({ onOpen }) => {
         transition={{ delay: 0.4 }}
         style={{
           color: "#b8894a", letterSpacing: "0.3em", fontSize: 10,
-          textTransform: "uppercase", fontFamily: "Georgia, serif",
-          marginBottom: 48,
+          textTransform: "uppercase", fontFamily: "Georgia, serif", marginBottom: 48,
         }}
       >
         You are cordially invited
@@ -224,19 +217,24 @@ const Envelope = ({ onOpen }) => {
                 <stop offset="0%" stopColor="#faf4e6" />
                 <stop offset="100%" stopColor="#f0e8d4" />
               </linearGradient>
-              <radialGradient id="waxBase" cx="38%" cy="33%" r="60%">
-                <stop offset="0%" stopColor="#8c3b14" />
-                <stop offset="50%" stopColor="#641f08" />
-                <stop offset="100%" stopColor="#3a1004" />
+
+              {/* Natural wax seal — no drop shadow, organic blob shape */}
+              <radialGradient id="waxBody" cx="40%" cy="36%" r="65%">
+                <stop offset="0%" stopColor="#9c3f18" />
+                <stop offset="35%" stopColor="#7a2a0c" />
+                <stop offset="70%" stopColor="#5c1f08" />
+                <stop offset="100%" stopColor="#3e1405" />
               </radialGradient>
-              <radialGradient id="waxHighlight" cx="30%" cy="24%" r="42%">
-                <stop offset="0%" stopColor="#b04820" stopOpacity="0.55" />
-                <stop offset="100%" stopColor="#b04820" stopOpacity="0" />
+              <radialGradient id="waxSheen" cx="28%" cy="22%" r="38%">
+                <stop offset="0%" stopColor="rgba(200,100,50,0.5)" />
+                <stop offset="60%" stopColor="rgba(180,70,30,0.18)" />
+                <stop offset="100%" stopColor="rgba(160,50,10,0)" />
               </radialGradient>
-              <radialGradient id="waxShadow" cx="62%" cy="68%" r="38%">
-                <stop offset="0%" stopColor="#0a0200" stopOpacity="0.4" />
-                <stop offset="100%" stopColor="#0a0200" stopOpacity="0" />
+              <radialGradient id="waxDepth" cx="65%" cy="70%" r="42%">
+                <stop offset="0%" stopColor="rgba(15,5,2,0.38)" />
+                <stop offset="100%" stopColor="rgba(15,5,2,0)" />
               </radialGradient>
+
               <linearGradient id="creaseShadow" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="rgba(0,0,0,0.16)" />
                 <stop offset="100%" stopColor="rgba(0,0,0,0)" />
@@ -249,16 +247,11 @@ const Envelope = ({ onOpen }) => {
 
             {/* Inner liner */}
             <rect x="2" y="2" width="416" height="256" rx="2" fill="url(#innerLiner)" />
-            {[0,60,120,180,240,300,360].map(x => (
-              <line key={x} x1={x} y1="260" x2={x+260} y2="0"
-                stroke="rgba(181,128,74,0.04)" strokeWidth="1" />
-            ))}
 
             {/* Main body */}
             <rect x="0" y="0" width="420" height="258" rx="3" fill="url(#paperBody)" />
-            {[32,64,96,128,160,192,224].map(y => (
-              <line key={y} x1="0" y1={y} x2="420" y2={y}
-                stroke="rgba(180,150,100,0.05)" strokeWidth=".8" />
+            {[32, 64, 96, 128, 160, 192, 224].map(y => (
+              <line key={y} x1="0" y1={y} x2="420" y2={y} stroke="rgba(180,150,100,0.05)" strokeWidth=".8" />
             ))}
             <rect x="0" y="0" width="420" height="6" rx="3" fill="url(#edgeHighlight)" />
             <rect x=".5" y=".5" width="419" height="257" rx="2.5" fill="none"
@@ -291,8 +284,7 @@ const Envelope = ({ onOpen }) => {
 
             {/* Top flap group */}
             <g ref={flapGroupRef}>
-              <polygon ref={flapFrontRef} points="0,0 420,0 210,148"
-                fill="url(#flapTFront)" />
+              <polygon ref={flapFrontRef} points="0,0 420,0 210,148" fill="url(#flapTFront)" />
               <polygon points="0,0 420,0 210,148" fill="rgba(0,0,0,0.05)" />
               <polygon points="170,100 250,100 210,148" fill="rgba(0,0,0,0.08)" />
               <polygon points="0,0 420,0 210,148" fill="none"
@@ -301,45 +293,69 @@ const Envelope = ({ onOpen }) => {
                 stroke="rgba(255,255,255,0.4)" strokeWidth="1" />
             </g>
 
-            {/* Wax seal */}
+            {/* ── Natural Wax Seal — no shadow, organic dripped shape ── */}
             <g
               ref={sealGroupRef}
               style={{ transformOrigin: "210px 128px" }}
             >
-              <ellipse cx="213" cy="133" rx="34" ry="33"
-                fill="rgba(0,0,0,0.32)" />
+              {/* Main wax blob — irregular organic shape like real dripped wax */}
               <path
-                d="M210 97 C222 97 240 106 243 118 C246 130 242 152 230 157 C218 163 196 160 188 150 C180 140 180 120 190 110 C196 103 202 97 210 97Z"
-                fill="url(#waxBase)"
+                d="M210 94 C218 93 228 97 235 103 C243 110 247 120 246 130 C245 140 240 151 232 156 C224 162 213 164 203 161 C193 158 184 151 181 141 C177 131 179 119 185 111 C191 103 202 95 210 94Z"
+                fill="url(#waxBody)"
+              />
+              {/* Natural edge drip details */}
+              <path
+                d="M235 103 C238 99 241 97 243 100 C245 103 242 107 238 107 C237 107 236 105 235 103Z"
+                fill="#7a2a0c"
               />
               <path
-                d="M210 97 C222 97 240 106 243 118 C246 130 242 152 230 157 C218 163 196 160 188 150 C180 140 180 120 190 110 C196 103 202 97 210 97Z"
-                fill="url(#waxHighlight)"
+                d="M246 130 C250 129 252 132 250 135 C248 138 245 136 245 133 C245 132 246 131 246 130Z"
+                fill="#6a2008"
               />
               <path
-                d="M210 97 C222 97 240 106 243 118 C246 130 242 152 230 157 C218 163 196 160 188 150 C180 140 180 120 190 110 C196 103 202 97 210 97Z"
-                fill="url(#waxShadow)"
+                d="M203 161 C202 165 199 167 197 165 C195 163 197 160 200 160 C201 160 202 160 203 161Z"
+                fill="#6a2008"
               />
               <path
-                d="M210 97 C222 97 240 106 243 118 C246 130 242 152 230 157 C218 163 196 160 188 150 C180 140 180 120 190 110 C196 103 202 97 210 97Z"
-                fill="none" stroke="rgba(160,58,24,0.6)" strokeWidth="1.5"
+                d="M181 141 C177 143 175 140 176 137 C177 134 181 135 181 138 C181 139 181 140 181 141Z"
+                fill="#7a2a0c"
               />
-              <ellipse cx="210" cy="128" rx="24" ry="23" fill="none"
-                stroke="rgba(160,58,24,0.3)" strokeWidth=".7" />
-              <ellipse cx="210" cy="128" rx="20" ry="19" fill="none"
-                stroke="rgba(200,80,30,0.25)" strokeWidth=".5" />
-              <path d="M210 108 Q213 116 220 116 Q213 116 210 124 Q207 116 200 116 Q207 116 210 108Z"
-                fill="#d4a060" opacity=".9" />
-              <path d="M210 132 Q213 140 220 140 Q213 140 210 148 Q207 140 200 140 Q207 140 210 132Z"
-                fill="#d4a060" opacity=".45" />
-              <path d="M190 128 Q198 131 198 138 Q198 131 206 128 Q198 125 198 118 Q198 125 190 128Z"
-                fill="#d4a060" opacity=".45" />
-              <path d="M214 128 Q222 131 222 138 Q222 131 230 128 Q222 125 222 118 Q222 125 214 128Z"
-                fill="#d4a060" opacity=".45" />
-              <circle cx="210" cy="128" r="3.2" fill="#d4a060" opacity=".85" />
-              <text x="210" y="126" textAnchor="middle" fontFamily="Georgia,serif" fontSize="8"
-                fill="#e8bc78" opacity=".92" letterSpacing="2.2" fontStyle="italic">
-                A&amp;V
+              {/* Sheen highlight */}
+              <path
+                d="M210 94 C218 93 228 97 235 103 C243 110 247 120 246 130 C245 140 240 151 232 156 C224 162 213 164 203 161 C193 158 184 151 181 141 C177 131 179 119 185 111 C191 103 202 95 210 94Z"
+                fill="url(#waxSheen)"
+              />
+              {/* Depth / shadow on lower portion */}
+              <path
+                d="M210 94 C218 93 228 97 235 103 C243 110 247 120 246 130 C245 140 240 151 232 156 C224 162 213 164 203 161 C193 158 184 151 181 141 C177 131 179 119 185 111 C191 103 202 95 210 94Z"
+                fill="url(#waxDepth)"
+              />
+              {/* Edge stroke */}
+              <path
+                d="M210 94 C218 93 228 97 235 103 C243 110 247 120 246 130 C245 140 240 151 232 156 C224 162 213 164 203 161 C193 158 184 151 181 141 C177 131 179 119 185 111 C191 103 202 95 210 94Z"
+                fill="none"
+                stroke="rgba(140,50,20,0.55)"
+                strokeWidth="1.2"
+              />
+              {/* Inner embossed ring */}
+              <circle cx="210" cy="128" r="24" fill="none"
+                stroke="rgba(200,120,60,0.3)" strokeWidth="1" />
+              <circle cx="210" cy="128" r="19" fill="none"
+                stroke="rgba(220,140,80,0.2)" strokeWidth="0.7" />
+              {/* Embossed initials: A + V only */}
+              <text
+                x="210"
+                y="133"
+                textAnchor="middle"
+                fontFamily="Palatino Linotype, Palatino, Georgia, serif"
+                fontSize="16"
+                fontStyle="italic"
+                fontWeight="400"
+                fill="#e8c080"
+                opacity="0.95"
+                letterSpacing="3"
+              >
+                A + V
               </text>
             </g>
           </svg>
